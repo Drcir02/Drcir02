@@ -1,96 +1,88 @@
-/* ===== Richard Janis – itch.io profile (v3) =====
+/* ===== Richard Janis – itch.io profile (v4, laid out from the Figma 1920px measurements) =====
    BEFORE PASTING – in itch "Edit profile" add these 4 links (any order):
      1) your Wiki URL (must contain the word "wiki")   2) LinkedIn   3) ArtStation   4) Discord
-   Anything marked PLACEHOLDER is a guess until the real assets/values exist. */
+   PLACEHOLDER = a guess until the real asset/value exists. */
 
-@font-face{
-  font-family:"Kaph";
-  src:url("https://cdn.jsdelivr.net/gh/drcir02/drcir02@main/fonts/Kaph-Regular-unhinted.woff") format("woff");
-  font-display:swap;
-}
-@font-face{
-  font-family:"FriendlyScribbles";
-  src:url("https://cdn.jsdelivr.net/gh/drcir02/drcir02@main/fonts/friendlyscribbles-unhinted.woff") format("woff");
-  font-display:swap;
-}
+/* Stand-in condensed font (Pathway Gothic One, open licence) – swap for your own condensed font later */
+@font-face{ font-family:"Cond"; font-display:swap;
+  src:url("https://cdn.jsdelivr.net/gh/drcir02/drcir02@main/fonts/PathwayGothicOne-latin.woff") format("woff");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face{ font-family:"Cond"; font-display:swap;
+  src:url("https://cdn.jsdelivr.net/gh/drcir02/drcir02@main/fonts/PathwayGothicOne-latin-ext.woff") format("woff");
+  unicode-range:U+0100-02AF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face{ font-family:"FriendlyScribbles"; font-display:swap;
+  src:url("https://cdn.jsdelivr.net/gh/drcir02/drcir02@main/fonts/friendlyscribbles-unhinted.woff") format("woff"); }
 
 :root{
-  --card-w:380px;                 /* PLACEHOLDER (Figma 457px; itch thumbs are 315x250 so bigger = softer) */
+  --font:"Cond", "Arial Narrow", sans-serif;
+  --wrap:min(914px, calc(100vw - 48px));   /* Figma: content column 914px = 2 cards, centred */
+  --card-w:457px;                          /* Figma card 457 x 329 */
   --card-ratio:457 / 329;
   --gap:0px;
-  --ink:#3a2f2a;                  /* PLACEHOLDER text colour */
-  --ink-soft:rgba(58,47,42,.6);
+  --ink:#3a2f2a;                           /* PLACEHOLDER text colour */
+  --ink-soft:rgba(58,47,42,.55);
   --overlay-text:#fff;
-  --font:"Kaph", sans-serif;
-  --logo-url:none;                /* PLACEHOLDER: url("https://cdn.jsdelivr.net/gh/drcir02/drcir02@main/images/vedasir-logo.png") */
-  --wrap:1200px;
+  --logo-url:none;                         /* PLACEHOLDER: url("https://cdn.jsdelivr.net/gh/drcir02/drcir02@main/images/vedasir-logo.png") */
 }
 
 /* ---------- Base type ---------- */
 .user_page_wrap{ overflow-x:clip; font-family:var(--font); }
 .user_page, .user_page h1, .user_page h2, .user_page h3, .user_page p,
-.user_page .game_title, .user_page .game_text, .footer{ font-family:var(--font); line-height:1.3; }
-.user_page h2, .user_page h3, .user_page .game_title{ padding-block:.12em; overflow:visible; }
+.user_page .game_title, .user_page .game_text, .footer{ font-family:var(--font); line-height:1.25; }
+.user_page h2, .user_page h3, .user_page .game_title{ padding-block:.1em; overflow:visible; }
 
-/* ---------- Page layout: one column, our own order ---------- */
+/* ---------- Page layout: one centred column, our own order ---------- */
 .user_page{ display:flex; flex-direction:column; position:relative; }
 .user_page .profile_content,
 .user_page .profile_content .columns,
-.user_page .profile_column{ display:contents; }          /* children become flex items so we can reorder */
-.user_page #profile_header{        order:0; }
-.user_page .game_column{           order:1; }            /* Recent Projects */
-.user_page section.collections{    order:2; }            /* more collections */
-.user_page .user_profile{          order:3; }            /* bio / software I'm using */
+.user_page .profile_column{ display:contents; }
+.user_page #profile_header{     order:0; }
+.user_page .game_column{        order:1; }
+.user_page section.collections{ order:2; }
+.user_page .user_profile{       order:3; }
 
 .user_page .game_column,
 .user_page .user_profile,
 .user_page section.collections .collection_row .inner_column{
-  width:100% !important; max-width:var(--wrap) !important; margin-inline:auto !important;
-  padding-inline:24px !important; box-sizing:border-box; float:none !important; border:0 !important;
+  width:var(--wrap) !important; max-width:none !important; margin-inline:auto !important;
+  padding:0 !important; box-sizing:border-box; float:none !important; border:0 !important;
 }
-.user_page .game_column{ padding-block:0 !important; margin-block:0 !important; }
 
-/* =====================  HEADER  =====================
-   [WIKI button] [logo] [Name / role line]  [tagline]            [Li]
-                                                                  [A ]
-                                                                  [Dc]   */
+/* =====================  HEADER  (Figma)  =====================
+   column left edge = 0.   Wiki hangs 140px LEFT of the column.
+   logo at +30, name at +180, tagline at +561 (right edge = column edge)          */
 .user_page .header .image_header{ display:none; }          /* we do NOT use the itch banner */
 .user_page .header{ padding:0; border:0; background:none; }
 .user_page .header .text_header{
-  max-width:var(--wrap); margin:0 auto; box-sizing:border-box;
-  padding:36px 90px 24px 190px;                            /* left room = Wiki button, right room = icon column */
-  display:grid; grid-template-columns:auto auto 1fr; align-items:center; column-gap:28px;
-  text-align:left;
+  width:var(--wrap); margin:0 auto; box-sizing:border-box; padding:50px 0 40px 30px; min-height:215px; text-align:left;
+  display:grid; grid-template-columns:120px auto minmax(0,1fr); align-items:center; column-gap:30px;
 }
-/* logo (placeholder: dashed box until --logo-url is set) */
-.user_page .header .text_header::before{
+.user_page .header .text_header::before{                   /* logo */
   content:""; width:120px; height:120px;
   background:var(--logo-url) center / contain no-repeat;
   border:2px dashed #b8a89e;                               /* PLACEHOLDER: delete this line when the logo is set */
 }
-/* name + role: h1 shows the profile name, so replace its text with ours */
-.user_page .header h1{ font-size:0; margin:0; padding:0; }
-.user_page .header h1::before{
-  content:"Richard Janiš"; display:block;
-  font-size:clamp(40px,6vw,76px); line-height:1.15; padding-block:.06em; color:#000;   /* PLACEHOLDER colour */
+.user_page .header h1{ font-size:0; margin:0; padding:0; white-space:nowrap; }
+.user_page .header h1::before{                             /* name */
+  content:"Richard Janiš"; display:block; white-space:nowrap;
+  font-size:84px; line-height:1; color:#000; font-variant-caps:small-caps; letter-spacing:.01em;
+  -webkit-text-stroke:1.6px #000;                          /* fake bold */
 }
-.user_page .header h1::after{
-  content:"Technical artist • UX Designer • Level Designer";
-  display:block; font-size:clamp(16px,1.9vw,24px); color:var(--ink-soft); padding-block:.1em;
+.user_page .header h1::after{                              /* role line */
+  content:"Technical artist • UX Designer • Level Designer"; display:block; white-space:nowrap;
+  font-size:27px; line-height:1.2; margin-top:6px; color:var(--ink-soft);
 }
-/* tagline (right of the name) */
-.user_page .header .text_header::after{
+.user_page .header .text_header::after{                    /* tagline */
   content:"My goal is to create enjoyable experiences that spark satisfaction and suck the stress out of players.";
-  font-size:clamp(14px,1.5vw,19px); line-height:1.3; color:var(--ink-soft); max-width:360px;
+  font-size:25px; line-height:1.15; color:var(--ink-soft); align-self:start; margin-top:14px;
 }
 
-/* ---------- Header links: Wiki button + Li / A / Discord icons ---------- */
+/* ---------- Header links: Wiki button + Li / A / D icons ---------- */
 .user_page .user_links_widget{
   position:absolute; top:0; left:50%; transform:translateX(-50%);
-  width:min(var(--wrap),100%); height:200px; box-sizing:border-box;
-  pointer-events:none; z-index:3; margin:0; padding:0; font-size:0;
+  width:var(--wrap); height:200px; pointer-events:none; z-index:3; margin:0; padding:0; font-size:0;
 }
-.user_page .user_links_widget .link_group{ display:none !important; }    /* hide itch's own links */
+.user_page .user_links_widget .link_group{ display:none !important; }
 .user_page .user_links_widget .link_group:has(a[href*="wiki" i]),
 .user_page .user_links_widget .link_group:has(a[href*="linkedin" i]),
 .user_page .user_links_widget .link_group:has(a[href*="artstation" i]),
@@ -101,32 +93,32 @@
   pointer-events:auto; display:flex; align-items:center; justify-content:center;
   font-size:0; text-decoration:none; color:var(--ink) !important;
 }
-/* Wiki button (left) – PLACEHOLDER shape: outlined box. Swap for your hand-drawn house shape later. */
-.user_page .user_links_widget .link_group:has(a[href*="wiki" i]){ position:absolute; left:24px; top:44px; }
+/* Wiki: far left, OUTSIDE the content column (x = column - 140). PLACEHOLDER shape: swap for your house drawing */
+.user_page .user_links_widget .link_group:has(a[href*="wiki" i]){ position:absolute; left:-140px; top:42px; }
 .user_page .user_links_widget a[href*="wiki" i]{
-  width:140px; height:104px; border:4px solid #000; border-radius:6px 28px 6px 6px;
+  width:150px; height:146px; border:5px solid #000; border-radius:6px 34px 8px 8px;
   font-family:"FriendlyScribbles", var(--font);
 }
-.user_page .user_links_widget a[href*="wiki" i]::after{ content:"WIKI"; font-size:40px; color:#000; }
-/* icon column (right) – PLACEHOLDER letters; replace with real icons later */
-.user_page .user_links_widget .link_group:has(a[href*="linkedin" i]){   position:absolute; right:24px; top:20px;  }
-.user_page .user_links_widget .link_group:has(a[href*="artstation" i]){ position:absolute; right:24px; top:78px;  }
-.user_page .user_links_widget .link_group:has(a[href*="discord" i]){    position:absolute; right:24px; top:136px; }
+.user_page .user_links_widget a[href*="wiki" i]::after{ content:"WIKI"; font-size:48px; color:#000; }
+/* Social icons: column to the right of the content (wireframe). PLACEHOLDER letters. */
+.user_page .user_links_widget .link_group:has(a[href*="linkedin" i]){   position:absolute; right:-70px; top:30px;  }
+.user_page .user_links_widget .link_group:has(a[href*="artstation" i]){ position:absolute; right:-70px; top:88px;  }
+.user_page .user_links_widget .link_group:has(a[href*="discord" i]){    position:absolute; right:-70px; top:146px; }
 .user_page .user_links_widget a[href*="linkedin" i],
 .user_page .user_links_widget a[href*="artstation" i],
 .user_page .user_links_widget a[href*="discord" i]{
-  width:44px; height:44px; border:2px solid var(--ink); border-radius:8px; background:rgba(255,255,255,.35);
+  width:46px; height:46px; border:2px solid var(--ink); border-radius:8px; background:rgba(255,255,255,.35);
 }
-.user_page .user_links_widget a[href*="linkedin" i]::after{   content:"Li"; font-size:20px; }
-.user_page .user_links_widget a[href*="artstation" i]::after{ content:"A";  font-size:22px; }
-.user_page .user_links_widget a[href*="discord" i]::after{    content:"D";  font-size:22px; }
+.user_page .user_links_widget a[href*="linkedin" i]::after{   content:"Li"; font-size:26px; }
+.user_page .user_links_widget a[href*="artstation" i]::after{ content:"A";  font-size:28px; }
+.user_page .user_links_widget a[href*="discord" i]::after{    content:"D";  font-size:28px; }
 .user_page .user_links_widget a:hover{ background:rgba(255,255,255,.7); }
 
 /* ---------- Section titles ---------- */
 .user_page .game_column::before{
-  content:"Recent Projects"; display:block; font-size:28px; color:var(--ink); margin:24px 0 12px; padding-block:.12em;
+  content:"Recent Projects"; display:block; font-size:34px; color:var(--ink); margin:14px 0 10px; padding-block:.1em;
 }
-.user_page .collection_row h2{ font-size:28px; margin:32px 0 12px; }
+.user_page .collection_row h2{ font-size:34px; margin:36px 0 10px; }
 .user_page .collection_row h2 a{ color:var(--ink) !important; text-decoration:none; }
 
 /* ---------- Horizontal carousels (main grid + every collection) ---------- */
@@ -134,12 +126,11 @@
 .user_page .game_grid_widget{
   display:flex !important; flex-wrap:nowrap !important; gap:var(--gap);
   overflow-x:auto; overflow-y:hidden;
-  scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
+  scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; scrollbar-width:none;
   margin-right:calc(50% - 50vw) !important;               /* run off the right screen edge */
   padding-right:14vw;
-  -webkit-mask-image:linear-gradient(to right,#000 0,#000 70%,transparent 100%);
-          mask-image:linear-gradient(to right,#000 0,#000 70%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to right,#000 0,#000 72%,transparent 100%);
+          mask-image:linear-gradient(to right,#000 0,#000 72%,transparent 100%);
 }
 .user_page .game_grid_widget::-webkit-scrollbar{ display:none; }
 
@@ -159,14 +150,14 @@
 }
 .user_page .game_cell:hover .game_thumb img{ transform:scale(1.04); }
 .user_page .game_cell .game_cell_data{
-  position:absolute !important; left:0; right:0; bottom:0; margin:0 !important; padding:56px 16px 14px !important;
+  position:absolute !important; left:0; right:0; bottom:0; margin:0 !important; padding:60px 18px 14px !important;
   background:linear-gradient(to top,rgba(0,0,0,.78),rgba(0,0,0,0)); pointer-events:none;
 }
 .user_page .game_grid_widget .game_cell .game_title a.title{
-  color:var(--overlay-text) !important; font-size:24px; text-decoration:none; text-shadow:0 1px 3px rgba(0,0,0,.8);
+  color:var(--overlay-text) !important; font-size:30px; text-decoration:none; text-shadow:0 1px 3px rgba(0,0,0,.8);
 }
 .user_page .game_grid_widget .game_cell .game_text{
-  color:rgba(255,255,255,.88) !important; font-size:15px; text-shadow:0 1px 3px rgba(0,0,0,.8);
+  color:rgba(255,255,255,.9) !important; font-size:20px; text-shadow:0 1px 3px rgba(0,0,0,.8);
   display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
 }
 .user_page .game_cell .game_author,
@@ -174,36 +165,44 @@
 .user_page .game_cell .game_platform{ display:none !important; }
 .user_page .game_cell .game_title a.title::after{ content:""; position:absolute; inset:0; pointer-events:auto; }
 
-/* ---------- Bio / "software I'm using" ---------- */
-.user_page .user_profile{ color:var(--ink); }
-.user_page .user_profile img{ width:64px; height:64px; object-fit:contain; margin:6px 10px; }   /* PLACEHOLDER icon size */
+/* ---------- "Software I'm using" (lives in the profile bio box) ---------- */
+.user_page .user_profile{ color:var(--ink); font-size:22px; margin-top:36px !important; }
+.user_page .user_profile h3{ font-size:34px; margin:0 0 10px; }
+.user_page .user_profile img{ width:64px; height:64px; object-fit:contain; margin:6px 14px 6px 0; }   /* PLACEHOLDER icon size */
 
 /* ---------- Footer ---------- */
-.footer{ color:var(--ink-soft); text-align:left; }
-.footer .footer_inner{ max-width:var(--wrap); margin-inline:auto; padding:24px; }
+.footer{ color:var(--ink-soft); text-align:left; margin-top:40px; }
+.footer .footer_inner{ width:var(--wrap); margin-inline:auto; padding:24px 0 36px; box-sizing:border-box; }
 .footer .footer_inner::before{
-  content:"Richard Janiš — Technical artist • UX Designer • Level Designer";
-  display:block; font-size:20px; color:var(--ink); margin-bottom:6px;
+  content:"Richard Janiš"; display:block; font-size:30px; color:var(--ink-soft);
 }
 .footer .footer_inner::after{
-  content:"My goal is to create enjoyable experiences that spark satisfaction and suck the stress out of players.";
-  display:block; font-size:14px; margin-top:6px;
+  content:"Technical artist • UX Designer • Level Designer  —  My goal is to create enjoyable experiences that spark satisfaction and suck the stress out of players.";
+  display:block; font-size:19px; margin-top:4px;
 }
-.footer a{ color:var(--ink-soft) !important; }
+.footer a{ color:var(--ink-soft) !important; font-size:18px; }
 
-/* ---------- Mobile ---------- */
-@media (max-width:760px){
-  :root{ --card-w:78vw; }
-  .user_page .header .text_header{ grid-template-columns:auto 1fr; padding:20px 24px 12px; row-gap:10px; }
-  .user_page .header .text_header::after{ grid-column:1 / -1; max-width:none; }
-  .user_page .header .text_header::before{ width:72px; height:72px; }
-  /* links become a row under the header instead of absolute */
+/* ---------- Narrower than 1200px: Wiki + icons don't fit outside the column ---------- */
+@media (max-width:1199px){
   .user_page .user_links_widget{
-    position:static; transform:none; width:100%; height:auto; order:0;
-    display:flex; flex-wrap:wrap; gap:10px; justify-content:center; padding:4px 24px 12px; box-sizing:border-box;
+    position:static; transform:none; width:var(--wrap); height:auto; order:0; margin:0 auto;
+    display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-start; padding:0 0 16px; box-sizing:border-box;
   }
   .user_page .user_links_widget .link_group:has(a){ position:static !important; }
-  .user_page .user_links_widget a[href*="wiki" i]{ width:96px; height:56px; }
-  .user_page .user_links_widget a[href*="wiki" i]::after{ font-size:26px; }
-  .user_page .game_column::before, .user_page .collection_row h2{ font-size:24px; }
+  .user_page .user_links_widget a[href*="wiki" i]{ width:104px; height:56px; border-width:4px; }
+  .user_page .user_links_widget a[href*="wiki" i]::after{ font-size:32px; }
+}
+/* ---------- Phone ---------- */
+@media (max-width:760px){
+  :root{ --card-w:78vw; }
+  .user_page .header .text_header{ grid-template-columns:72px 1fr; padding:20px 0 12px; row-gap:10px; column-gap:16px; }
+  .user_page .header .text_header::before{ width:72px; height:72px; }
+  .user_page .header h1::before{ font-size:52px; }
+  .user_page .header .text_header{ min-height:0; }
+  .user_page .header h1::after{ font-size:20px; white-space:normal; }
+  .user_page .header .text_header::after{ grid-column:1 / -1; font-size:20px; margin-top:0; }
+  .user_page .game_column::before, .user_page .collection_row h2, .user_page .user_profile h3{ font-size:28px; }
+  .user_page .game_grid_widget .game_cell .game_title a.title{ font-size:24px; }
+  .user_page .game_grid_widget .game_cell .game_text{ font-size:17px; }
+  .footer .footer_inner::after{ font-size:17px; }
 }
