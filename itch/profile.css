@@ -1,0 +1,114 @@
+/* ===== Richard Janis – itch.io profile (DRAFT, placeholder values) =====
+   Selectors are based on itch's usual markup (.game_grid_widget / .game_cell …).
+   Verify against the real page HTML and adjust. */
+
+/* ---------- Fonts (files live in this repo) ---------- */
+@font-face{
+  font-family:"Kaph";
+  src:url("https://cdn.jsdelivr.net/gh/drcir02/drcir02@main/fonts/Kaph-Regular-unhinted.woff") format("woff");
+  font-display:swap;
+}
+@font-face{
+  font-family:"FriendlyScribbles";
+  src:url("https://cdn.jsdelivr.net/gh/drcir02/drcir02@main/fonts/friendlyscribbles-unhinted.woff") format("woff");
+  font-display:swap;
+}
+
+:root{
+  --bg:#f8e8df;          /* placeholder: page tint from Figma */
+  --card-w:457px;        /* Figma card width */
+  --card-h:329px;        /* Figma card height */
+  --gap:0px;             /* Figma cards touch */
+  --text:#fff;
+  --font:"Kaph", sans-serif;
+}
+
+body{ background-color:var(--bg); font-family:var(--font); }
+
+/* Stops letters being cut off (descenders/ascenders) with this font */
+h1,h2,h3,.game_title,.game_text,.game_author,.header_widget{
+  font-family:var(--font);
+  line-height:1.25;
+  padding-block:.12em;
+  overflow:visible;
+}
+
+/* ---------- Horizontal carousel for every game grid ---------- */
+.game_grid_widget{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  gap:var(--gap);
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-snap-type:x proximity;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;                 /* hide scrollbar (Firefox) */
+  margin-right:calc(50% - 50vw);        /* bleed to right screen edge */
+  padding-right:12vw;                   /* room so last card can scroll past the fade */
+  /* fade out at the right edge */
+  -webkit-mask-image:linear-gradient(to right,#000 0,#000 72%,transparent 100%);
+          mask-image:linear-gradient(to right,#000 0,#000 72%,transparent 100%);
+}
+.game_grid_widget::-webkit-scrollbar{ display:none; }
+
+/* ---------- Card: image only + overlay text ---------- */
+.game_grid_widget .game_cell{
+  position:relative;
+  flex:0 0 var(--card-w);
+  width:var(--card-w) !important;
+  height:var(--card-h);
+  margin:0 !important;
+  padding:0 !important;
+  background:#c9b8ae;                   /* placeholder while image loads */
+  border:0 !important;
+  border-radius:0 !important;
+  overflow:hidden;
+  scroll-snap-align:start;
+}
+.game_cell .game_thumb,
+.game_cell .game_thumb img{
+  display:block;
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover;
+}
+.game_cell .game_thumb{ position:absolute; inset:0; }
+
+/* Text sits on top of the image with a soft dark gradient behind it */
+.game_cell .game_cell_data{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  padding:48px 16px 14px;
+  color:var(--text);
+  background:linear-gradient(to top,rgba(0,0,0,.75),rgba(0,0,0,0));
+  pointer-events:none;
+}
+.game_cell .game_title,
+.game_cell .game_title a,
+.game_cell .game_text,
+.game_cell .game_author a,
+.game_cell .game_genre,
+.game_cell .game_platform{
+  color:var(--text) !important;
+  text-shadow:0 1px 3px rgba(0,0,0,.8);
+}
+.game_cell .game_title{ font-size:24px; }
+.game_cell .game_title a{ text-decoration:none; }
+.game_cell .game_text{
+  font-size:15px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+/* whole card clickable: stretch the title link over the card */
+.game_cell .game_title a::after{ content:""; position:absolute; inset:0; pointer-events:auto; }
+
+/* subtle hover */
+.game_cell .game_thumb img{ transition:transform .35s ease; }
+.game_cell:hover .game_thumb img{ transform:scale(1.04); }
+
+/* ---------- Mobile ---------- */
+@media (max-width:640px){
+  :root{ --card-w:78vw; --card-h:56vw; }
+}
