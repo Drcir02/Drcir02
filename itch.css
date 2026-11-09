@@ -62,15 +62,16 @@
 /* ---------- 3. PAGE --------------------------------------------------- */
 html{ background:var(--bg) !important; }
 body{ background:transparent !important; color:var(--ink); font-family:var(--body); margin:0; min-height:1080px; }
-/* background image: always the full viewport (cover), stays put while you scroll.
-   A fixed pseudo-element is used instead of background-attachment:fixed, which phones ignore. */
-body::before{
-  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
-  background:var(--page-img) center / cover no-repeat;
+/* background image: sits BEHIND THE WHOLE PAGE and scrolls with it (content sits on the bg).
+   It always spans the full width and the full page height (min. one screen high). */
+#wrapper{ position:relative; min-height:100vh; }
+#wrapper::before{
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:var(--page-img) center top / cover no-repeat;
 }
-/* portrait / narrow screens: "cover" would only show the empty middle strip of the image,
-   so stretch the whole image to fit the screen instead (the shapes on its edges stay visible) */
-@media (max-aspect-ratio:4/3){ body::before{ background-size:100% 100%; } }
+/* narrow screens: "cover" on a tall page would only show the empty middle of the image,
+   so stretch the whole image over the page instead (the shapes on its edges stay visible) */
+@media (max-width:1180px){ #wrapper::before{ background-size:100% 100%; } }
 /* itch's own footer strip: keep it, but drop the dark divider line from the old theme */
 .footer{ border-color:rgba(0,0,0,.08) !important; background:none !important; }
 #wrapper,.user_page_wrap{ background:none !important; }
