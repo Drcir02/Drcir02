@@ -69,6 +69,8 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
   background:var(--page-img) center / 100% 100% no-repeat;     /* whole image, edge to edge, no cropping */
 }
+/* phones: keep the image's proportions (sides get cropped) instead of stretching it */
+@media (max-width:1180px){ #wrapper::before{ background-size:cover; } }
 /* itch's own footer strip: keep it, but drop the dark divider line from the old theme */
 .footer{ border-color:rgba(0,0,0,.08) !important; background:none !important; }
 #wrapper,.user_page_wrap{ background:none !important; }
@@ -221,17 +223,29 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   font:400 12px/1 var(--body); text-transform:uppercase; letter-spacing:1.5px;
   text-shadow:0 1px 3px rgba(0,0,0,.85);
 }
-.game_cell .game_platform{                         /* platform icons: top-right of the image */
-  position:absolute; top:14px; right:14px; z-index:3; margin:0 !important; padding:0 !important;
-  display:flex; gap:8px; align-items:center; color:#fff !important;
-  font-size:20px; line-height:1;
-  filter:drop-shadow(0 1px 3px rgba(0,0,0,.8)) drop-shadow(0 0 8px rgba(0,0,0,.5));
+/* platform markers, top-right of the cover. Every one (Windows / Mac / Linux / Android icons and
+   "Play in browser") is the same solid dark badge with a white glyph: readable on any cover,
+   no drop shadow. */
+.game_cell .game_platform{
+  position:absolute; top:12px; right:12px; z-index:3; margin:0 !important; padding:0 !important;
+  display:flex; gap:6px; align-items:center; font-size:0; line-height:1; filter:none !important;
 }
-.game_cell .game_platform .icon{ color:#fff !important; font-size:20px; margin:0 !important; }
-.game_cell .game_platform .web_flag{ font-size:0; padding:0; background:none; border:0; }
+.game_cell .game_platform .icon,
+.game_cell .game_platform .web_flag{
+  display:inline-flex !important; align-items:center; justify-content:center; box-sizing:border-box;
+  width:34px; height:34px; margin:0 !important; padding:0 !important;
+  background:rgba(14,14,14,.86) !important; color:#fff !important; border:0 !important; border-radius:7px;
+  font-size:19px; line-height:1; text-shadow:none !important; box-shadow:none !important; filter:none !important;
+}
+.game_cell .game_platform .web_flag{ width:auto; padding:0 9px !important; font-size:0; }
 .game_cell .game_platform .web_flag::before{
-  content:"WEB"; font:700 13px/1 var(--display); letter-spacing:2px; color:#fff;
-  border:1.5px solid #fff; padding:3px 6px 2px;
+  content:"WEB"; font:700 15px/1 var(--display); letter-spacing:2px; color:#fff; padding-top:1px;
+}
+/* sale / price tag (if a project has one): same badge, top-left */
+.game_cell .price_flag{
+  position:absolute; top:12px; left:12px; z-index:3; margin:0 !important;
+  background:rgba(14,14,14,.86) !important; color:#fff !important; border-radius:7px; padding:9px 11px !important;
+  font:700 15px/1 var(--display); letter-spacing:1px; text-shadow:none !important; box-shadow:none !important;
 }
 
 /* ---------- 6b. CARD HOVER + SEPARATION --------------------------------- */
@@ -265,7 +279,22 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   display:flex !important; flex-wrap:nowrap; gap:6px; box-sizing:border-box;     /* 6px between cards */
   width:1243px; padding:24px 0 20px 24px !important; margin:-24px 0 -20px -24px !important;
   overflow-x:auto; overflow-y:hidden;
-  scrollbar-width:thin; scrollbar-color:var(--muted) transparent;
+}
+/* scrollbars: a chunky rounded track + thumb that's easy to grab (Chrome/Edge/Safari/Opera;
+   Firefox gets its standard bar in the same colours) */
+.user_game_grid,.collections .game_list_widget{ scrollbar-width:auto !important; scrollbar-color:auto !important; }   /* undo itch's orange bar so the styling below applies */
+.user_game_grid::-webkit-scrollbar,.collections .game_list_widget::-webkit-scrollbar{ height:16px; }
+.user_game_grid::-webkit-scrollbar-track,.collections .game_list_widget::-webkit-scrollbar-track{
+  background:rgba(0,0,0,.07); border-radius:8px; margin-left:24px;
+}
+.user_game_grid::-webkit-scrollbar-thumb,.collections .game_list_widget::-webkit-scrollbar-thumb{
+  background:var(--muted); border-radius:8px; border:3px solid transparent; background-clip:padding-box; min-width:90px;
+}
+.user_game_grid::-webkit-scrollbar-thumb:hover,.collections .game_list_widget::-webkit-scrollbar-thumb:hover{
+  background:#5e5650; background-clip:padding-box;
+}
+@supports (-moz-appearance:none){
+  .user_game_grid,.collections .game_list_widget{ scrollbar-width:auto !important; scrollbar-color:var(--muted) rgba(0,0,0,.07) !important; }
 }
 /* ...a row that reaches the fade zone: Projects = 3+ cards (457px each), collections = 4+ cards (306px each).
    Projects ignores the hidden-project ids from 2b when counting. */
@@ -300,8 +329,11 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
 .collections .game_cell .game_cell_data{ padding:12px !important; }
 .collections .game_cell .game_title a{ font-size:22px; }
 .collections .game_cell .game_text{ font-size:13px; -webkit-line-clamp:2; }
-.collections .game_cell .game_platform{ top:10px; right:10px; font-size:16px; }
-.collections .game_cell .game_platform .icon{ font-size:16px; }
+.collections .game_cell .game_platform{ top:10px; right:10px; }
+.collections .game_cell .game_platform .icon,
+.collections .game_cell .game_platform .web_flag{ height:30px; }
+.collections .game_cell .game_platform .icon{ width:30px; font-size:17px; }
+.collections .game_cell .game_platform .web_flag::before{ font-size:13px; }
 
 /* ---------- 9. NARROW SCREENS  (<= 1180px: everything stacks in one column)
    The body's elements stop being absolutely positioned; they become flex items of
