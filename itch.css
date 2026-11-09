@@ -42,24 +42,22 @@
   --ico-discord:    url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-discord.svg");
 }
 
-/* ---------- 2b. HIDDEN GAMES -------------------------------------------
-   itch only exposes the HIDE buttons for the Projects grid; collection rows always
-   contain every game in the collection. To keep hidden games out of EVERYTHING,
-   their ids are listed here (id = data-game_id of the game on itch).
-   Add or remove a line when you change what's hidden.
-     4698168  Fukanica
-     4138198  Rest in Hell
-     3278434  Vector Books Icon Pack
-     3282936  JaveArt - Fantasy Runic Icon Pack
-   A collection row with nothing left is removed, and when the whole Others
-   section is empty its heading goes too. */
-.game_cell[data-game_id="4698168"],
-.game_cell[data-game_id="4138198"],
-.game_cell[data-game_id="3278434"],
-.game_cell[data-game_id="3282936"]{ display:none !important; }
-.collections .collection_row:not(:has(.game_cell:not([data-game_id="4698168"]):not([data-game_id="4138198"]):not([data-game_id="3278434"]):not([data-game_id="3282936"]))){ display:none !important; }
-.user_page:not(:has(.collections .game_cell:not([data-game_id="4698168"]):not([data-game_id="4138198"]):not([data-game_id="3278434"]):not([data-game_id="3282936"]))) .user_profile > :nth-child(7),
-.user_page:not(:has(.collections .game_cell:not([data-game_id="4698168"]):not([data-game_id="4138198"]):not([data-game_id="3278434"]):not([data-game_id="3282936"]))) .user_profile > :nth-child(8){ display:none !important; }
+/* ---------- 2b. WHAT YOU HIDE ON ITCH ----------------------------------
+   itch removes hidden projects / collections for visitors, but they can still show up
+   for you (editor preview, logged in) - so they are also removed here.
+
+   1) Projects row: ids of the projects marked HIDDEN under "My projects"
+        4698168 Fukanica      4138198 Rest in Hell
+        3278434 Vector Books  3282936 JaveArt - Fantasy Runic Icon Pack
+      (they stay visible inside the collections they belong to)
+   2) Collections marked HIDDEN: matched by a word in the collection's link
+        JaveArt's Collection  ->  "javeart"
+   Change the lists when you change what's hidden. */
+.user_game_grid .game_cell[data-game_id="4698168"],
+.user_game_grid .game_cell[data-game_id="4138198"],
+.user_game_grid .game_cell[data-game_id="3278434"],
+.user_game_grid .game_cell[data-game_id="3282936"]{ display:none !important; }
+.collections .collection_row:has(h2 a[href*="javeart" i]){ display:none !important; }
 
 /* ---------- 3. PAGE --------------------------------------------------- */
 html{ background:var(--bg) !important; }
@@ -148,9 +146,9 @@ body::before{
 .user_page .user_profile > :nth-child(5){
   left:0; top:240px; font:700 32px/22px var(--display) !important; letter-spacing:4.16px !important; color:var(--ink) !important;
 }
-/* 6  "Recent>>>Older"       right edge of column, y+245 */
+/* 6  "Recent>>>Older"       right edge 48px inside the column (clear of the link tiles), y+245 */
 .user_page .user_profile > :nth-child(6){
-  left:736px; top:245px; width:240px;
+  left:auto; right:48px; top:245px; width:auto; text-align:right !important;
   font:700 24px/17px var(--display) !important; letter-spacing:16.32px !important; color:var(--muted-2) !important;
 }
 /* 7  "Others" heading       x+0 y+667 */
