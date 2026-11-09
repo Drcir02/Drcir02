@@ -67,11 +67,8 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
 #wrapper{ position:relative; min-height:100vh; }
 #wrapper::before{
   content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
-  background:var(--page-img) center top / cover no-repeat;
+  background:var(--page-img) center / 100% 100% no-repeat;     /* whole image, edge to edge, no cropping */
 }
-/* narrow screens: "cover" on a tall page would only show the empty middle of the image,
-   so stretch the whole image over the page instead (the shapes on its edges stay visible) */
-@media (max-width:1180px){ #wrapper::before{ background-size:100% 100%; } }
 /* itch's own footer strip: keep it, but drop the dark divider line from the old theme */
 .footer{ border-color:rgba(0,0,0,.08) !important; background:none !important; }
 #wrapper,.user_page_wrap{ background:none !important; }
@@ -237,6 +234,23 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   border:1.5px solid #fff; padding:3px 6px 2px;
 }
 
+/* ---------- 6b. CARD HOVER + SEPARATION --------------------------------- */
+/* no underlines anywhere (itch underlines titles + collection labels on hover) */
+.user_page a,.user_page a:hover,
+.user_page .game_grid_widget .game_cell .game_title a.title:hover,
+.user_page .collection_row h2 a:hover{ text-decoration:none !important; }
+/* a hairline frame on top of every cover, so two dark covers side by side still read as two cards */
+.game_cell::after{
+  content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.14); transition:box-shadow .25s ease;
+}
+/* hover: the cover zooms in slowly, the card lifts a little, the frame lights up - nothing else changes */
+.game_cell{ transition:transform .25s ease, box-shadow .25s ease; }
+.game_cell .thumb_link img{ transition:transform .6s cubic-bezier(.2,.7,.2,1); }
+.game_cell:hover{ transform:translateY(-3px); box-shadow:0 12px 24px rgba(0,0,0,.26); }
+.game_cell:hover .thumb_link img{ transform:scale(1.04); }
+.game_cell:hover::after{ box-shadow:inset 0 0 0 1px rgba(255,255,255,.4); }
+
 /* ---------- 7. PROJECTS ROW  (the projects you selected on itch) ------- */
 .profile_content,.profile_content .columns{ display:block !important; }
 .game_column{
@@ -248,7 +262,7 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
    the layout. A row only gets a fade + scrollbar when a card actually reaches into the
    fade zone (right of 938px); otherwise it's plain: no fade, no scrollbar. */
 .user_game_grid,.collections .game_list_widget{
-  display:flex !important; flex-wrap:nowrap; gap:0; box-sizing:border-box;
+  display:flex !important; flex-wrap:nowrap; gap:6px; box-sizing:border-box;     /* 6px between cards */
   width:1243px; padding:24px 0 20px 24px !important; margin:-24px 0 -20px -24px !important;
   overflow-x:auto; overflow-y:hidden;
   scrollbar-width:thin; scrollbar-color:var(--muted) transparent;
