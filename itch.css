@@ -1,0 +1,299 @@
+/* =====================================================================
+   vedasir.itch.io  -  profile page, built 1:1 from Figma "Itch site (BASE)"
+   This file lives in the repo as itch.css and is loaded by the 1-line
+   @import in itch's Custom CSS box (itch limits that box to 5120 characters).
+   ALL TEXT lives in the Profile body (see itch-profile-body.html).
+   The CSS positions the body's 12 elements BY ORDER (nth-child), so keep the
+   body in that order and don't add/remove elements in it.
+
+   Design frame: 1920x1080, content column 1024px centred.
+   Coordinates below are px, measured from the Figma frame; for the absolutely
+   positioned text, (0,0) = top-left of the 1024px column at the frame top.
+   ===================================================================== */
+
+/* ---------- 1. FONTS  (jsDelivr -> Drcir02/Drcir02 repo) -------------- */
+@font-face{
+  font-family:"Built";
+  src:url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/fonts/Built.woff2") format("woff2"),
+      url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/fonts/Built.woff")  format("woff");
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Franchise Free";
+  src:url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/fonts/Franchise-Bold-unhinted.woff2") format("woff2"),
+      url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/fonts/Franchise-Bold-unhinted.woff")  format("woff");
+  font-weight:700; font-style:normal; font-display:swap;
+}
+
+/* ---------- 2. TOKENS ------------------------------------------------- */
+:root{
+  --bg:#f7ece7;
+  --ink:#000;
+  --muted:#a19891;              /* roles / footer text            */
+  --muted-2:#b7b1b1;            /* goal text / "Recent>>>Older"   */
+  --display:"Franchise Free","Franchise",Impact,"Arial Narrow",sans-serif;
+  --body:"Built","Arial Narrow",sans-serif;
+
+  --logo:       url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/Logo.png");            /* 126x112  */
+  --logo-small: url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/LOGO_Secondary.png");  /* 66x42    */
+  --page-img:   url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/BG.png");              /* 1920x1080 */
+  --ico-linkedin:   url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-linkedin.svg");
+  --ico-artstation: url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-artstation.svg");
+  --ico-discord:    url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-discord.svg");
+}
+
+/* ---------- 3. PAGE --------------------------------------------------- */
+html,body{
+  background:var(--bg) var(--page-img) center top / cover no-repeat fixed !important;
+  color:var(--ink); font-family:var(--body); margin:0;
+}
+body{ min-height:1080px; }
+#wrapper,.user_page_wrap{ background:none !important; }
+.user_page{
+  position:relative;
+  width:1024px; max-width:100%;
+  margin:0 auto !important;
+  padding:64px 0 199px !important;           /* top 64 | bottom = 68 gap + 107 footer + 24 */
+  background:none !important;
+}
+.user_page .inner_column{ max-width:none !important; width:auto !important; padding:0 !important; margin:0 !important; }
+.user_page .base_widget{ padding:0 !important; margin:0 !important; }
+.user_tools{ position:fixed; top:12px; right:16px; margin:0; z-index:50; }   /* itch "Follow" button */
+
+/* ---------- 4. HEADER BLOCK  (frame 1024 x 112; only the logo lives here) */
+#profile_header{
+  position:relative; height:112px;
+  margin:0 0 64px !important; padding:0 !important;
+  background:none !important; border:0 !important;
+}
+#profile_header .image_header,
+#profile_header .text_header{ display:none !important; }
+#profile_header::before{                         /* logo x+64, 126x112 */
+  content:""; position:absolute; left:64px; top:0; width:126px; height:112px;
+  background:var(--logo) center / contain no-repeat;
+}
+
+/* ---------- 5. PROFILE BODY = ALL TEXT -------------------------------- */
+.user_links{ display:none !important; }          /* itch's own link list (replaced by the 3 tiles) */
+.profile_content,.profile_content .columns,.profile_column{
+  display:block !important; position:static !important; padding:0 !important; margin:0 !important; float:none !important; width:auto !important;
+}
+.user_page .user_profile{ position:static !important; padding:0 !important; margin:0 !important; background:none !important; border:0 !important; }
+.user_page .user_profile > *{
+  position:absolute !important; margin:0 !important; padding:0 !important;
+  white-space:nowrap; text-align:left !important; text-transform:none;
+  font-family:var(--body); font-weight:400; letter-spacing:0; border:0 !important; background:none !important;
+}
+/* 1  name        x+214 y+85    */
+.user_page .user_profile > :nth-child(1){
+  left:214px; top:85px; font:700 84.5px/59px var(--display) !important; color:var(--ink) !important;
+}
+/* 2  role line   x+214 y+158   */
+.user_page .user_profile > :nth-child(2){
+  left:214px; top:158px; font:400 24px/18px var(--body) !important; color:var(--muted) !important;
+}
+/* 3  goal        x+597 y+97, 382 wide */
+.user_page .user_profile > :nth-child(3){
+  left:597px; top:97px; width:382px; white-space:normal;
+  font:400 24px/28.8px var(--body) !important; color:var(--muted-2) !important;
+}
+/* 4  link tiles  x+1048 y+88, 64x64, 16 gap (outside the column, right of the header) */
+.user_page .user_profile > :nth-child(4){
+  left:1048px; top:88px; list-style:none !important;
+  display:flex; flex-direction:column; gap:16px;
+  z-index:20;                                  /* in front of the Projects row (3rd tile overlaps its fade) */
+}
+.user_page .user_profile > ul li{ list-style:none !important; margin:0 !important; padding:0 !important; }
+.user_page .user_profile > ul li a{
+  position:relative; display:block; width:64px; height:64px; overflow:hidden;
+  font-size:0 !important; line-height:0; text-indent:-9999px;      /* keep the text for screen readers only */
+  background:#d9d9d9; color:var(--ink) !important; text-decoration:none !important;
+  transition:background-color .15s;
+}
+.user_page .user_profile > ul li a::before{
+  content:""; position:absolute; left:16px; top:16px; width:32px; height:32px;
+  background:currentColor;
+  -webkit-mask:var(--ico) center / contain no-repeat; mask:var(--ico) center / contain no-repeat;
+}
+.user_page .user_profile > ul li:nth-child(1) a{ --ico:var(--ico-linkedin); }     /* LinkedIn   */
+.user_page .user_profile > ul li:nth-child(2) a{ --ico:var(--ico-artstation); }   /* ArtStation */
+.user_page .user_profile > ul li:nth-child(3) a{ --ico:var(--ico-discord); }      /* Discord    */
+.user_page .user_profile > ul li:nth-child(1) a:hover{ background:#0a66c2; color:#fff !important; }
+.user_page .user_profile > ul li:nth-child(2) a:hover{ background:#13aff0; color:#fff !important; }
+.user_page .user_profile > ul li:nth-child(3) a:hover{ background:#5865f2; color:#fff !important; }
+
+/* 5  "Projects" heading     x+0 y+240 */
+.user_page .user_profile > :nth-child(5){
+  left:0; top:240px; font:700 32px/22px var(--display) !important; letter-spacing:4.16px !important; color:var(--ink) !important;
+}
+/* 6  "Recent>>>Older"       right edge of column, y+245 */
+.user_page .user_profile > :nth-child(6){
+  left:736px; top:245px; width:240px;
+  font:700 24px/17px var(--display) !important; letter-spacing:16.32px !important; color:var(--muted-2) !important;
+}
+/* 7  "Others" heading       x+0 y+667 */
+.user_page .user_profile > :nth-child(7){
+  left:0; top:667px; font:700 32px/22px var(--display) !important; letter-spacing:4.16px !important; color:var(--ink) !important;
+}
+/* 8  "Game-jams, assets etc." x+113 y+671 */
+.user_page .user_profile > :nth-child(8){
+  left:113px; top:671px; font:400 24px/18px var(--body) !important; letter-spacing:.72px !important; color:var(--muted) !important;
+}
+/* 9-12  footer text (all footer-grey) */
+.user_page .user_profile > :nth-child(9){  left:169px; top:972px;  font:400 24px/18px var(--body) !important; color:var(--muted) !important; }
+.user_page .user_profile > :nth-child(10){ left:169px; top:1002px; font:400 24px/18px var(--body) !important; color:var(--muted) !important; }
+.user_page .user_profile > :nth-child(11){ left:169px; top:1044px; font:400 16px/12px var(--body) !important; color:var(--muted) !important; }
+.user_page .user_profile > :nth-child(12){
+  left:519px; top:1044px; width:441px; text-align:right !important;
+  font:400 16px/12px var(--body) !important; color:var(--muted) !important;
+}
+/* footer logo  x+64 y+949, 66x42 */
+.user_page::before{
+  content:""; position:absolute; left:64px; top:949px; width:66px; height:42px;
+  background:var(--logo-small) center / contain no-repeat;
+}
+
+/* ---------- 6. SHARED CARD (Projects + Others) ------------------------ */
+.game_cell{
+  position:relative; box-sizing:border-box;
+  float:none !important; display:block !important;
+  margin:0 !important; padding:0 !important;
+  background:#d9d9d9; overflow:hidden;
+  box-shadow:0 10px 24px rgba(0,0,0,.16);
+  border:0 !important; border-radius:0 !important;
+}
+.game_cell:nth-child(even){ background:#f3f3f3; }
+.game_cell .game_thumb{
+  position:absolute !important; inset:0; width:100% !important; height:100% !important;
+  margin:0 !important; padding:0 !important;
+}
+.game_cell .game_thumb,.game_cell .thumb_link,.game_cell .thumb_link img{ border-radius:0 !important; }
+.game_cell .thumb_link{ display:block; width:100%; height:100%; }
+.game_cell .thumb_link img{ width:100% !important; height:100% !important; object-fit:cover; display:block; }
+.game_cell .game_thumb::after{                     /* readability scrim under the text */
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.18) 45%, rgba(0,0,0,0) 70%);
+}
+.game_cell .game_cell_data{
+  position:absolute !important; inset:0; z-index:2;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:20px !important; margin:0 !important;
+  pointer-events:none; box-sizing:border-box;
+}
+.game_cell .game_title{ margin:0 0 6px; padding:0; }
+.game_cell .game_title a{
+  pointer-events:auto; color:#fff !important; text-decoration:none;
+  font:700 32px/1.05 var(--display); letter-spacing:1px;
+  text-shadow:0 2px 4px rgba(0,0,0,.65), 0 0 14px rgba(0,0,0,.55);
+}
+.game_cell .game_text{
+  margin:0; padding:0; color:#fff !important;
+  font:400 16px/1.25 var(--body);
+  text-shadow:0 1px 3px rgba(0,0,0,.85), 0 0 12px rgba(0,0,0,.6);
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+}
+.game_cell .game_author{ display:none !important; }
+.game_cell .game_genre{
+  order:-1; margin:0 0 8px; padding:0; color:#fff !important; opacity:.85;
+  font:400 12px/1 var(--body); text-transform:uppercase; letter-spacing:1.5px;
+  text-shadow:0 1px 3px rgba(0,0,0,.85);
+}
+.game_cell .game_platform{                         /* platform icons: top-right of the image */
+  position:absolute; top:14px; right:14px; z-index:3; margin:0 !important; padding:0 !important;
+  display:flex; gap:8px; align-items:center; color:#fff !important;
+  font-size:20px; line-height:1;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.8)) drop-shadow(0 0 8px rgba(0,0,0,.5));
+}
+.game_cell .game_platform .icon{ color:#fff !important; font-size:20px; margin:0 !important; }
+.game_cell .game_platform .web_flag{ font-size:0; padding:0; background:none; border:0; }
+.game_cell .game_platform .web_flag::before{
+  content:"WEB"; font:700 13px/1 var(--display); letter-spacing:2px; color:#fff;
+  border:1.5px solid #fff; padding:3px 6px 2px;
+}
+
+/* ---------- 7. PROJECTS ROW  (cards 457 x 329, runs past the column and fades) */
+.profile_content,.profile_content .columns{ display:block !important; }
+.game_column{
+  position:relative; width:auto !important; float:none !important;
+  padding:34px 0 0 !important; margin:0 0 64px !important;
+}
+.user_game_grid{
+  display:flex !important; flex-wrap:nowrap; gap:0;
+  width:1243px; padding:24px 0 48px 24px !important; margin:-24px 0 -48px -24px !important;
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(to right,#000 938px,transparent 1243px);
+          mask-image:linear-gradient(to right,#000 938px,transparent 1243px);
+}
+.user_game_grid .game_cell{ flex:0 0 457px; width:457px !important; height:329px !important; }
+
+/* ---------- 8. OTHERS ROW  (cards 306 x 180; GameJams + Assets flattened into one row) */
+.collections{
+  position:relative; display:flex; flex-wrap:nowrap;
+  width:1243px; box-sizing:border-box;
+  padding:58px 0 48px 24px !important; margin:-24px 0 -48px -24px !important;
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(to right,#000 938px,transparent 1243px);
+          mask-image:linear-gradient(to right,#000 938px,transparent 1243px);
+}
+.collections .collection_row,
+.collections .collection_row .inner_column,
+.collections .carousel_wrapper,
+.collections .game_list_widget{ display:contents !important; }
+.collections .collection_row h2{ display:none !important; }
+.collections .game_cell{ flex:0 0 306px; width:306px !important; height:180px !important; }
+.collections .game_cell .game_cell_data{ padding:12px !important; }
+.collections .game_cell .game_title a{ font-size:22px; }
+.collections .game_cell .game_text{ font-size:13px; -webkit-line-clamp:2; }
+.collections .game_cell .game_platform{ top:10px; right:10px; font-size:16px; }
+.collections .game_cell .game_platform .icon{ font-size:16px; }
+
+/* ---------- 9. NARROW SCREENS  (<= 1180px: everything stacks in one column)
+   The body's elements stop being absolutely positioned; they become flex items of
+   .user_page (wrapping rows) together with the card rows, so headings still sit above
+   their rows. Header + footer are centred. "Projects / Recent>>>Older" and
+   "Others / Game-jams..." share a line when they fit and wrap underneath when they don't. */
+@media (max-width:1180px){
+  .user_page{ display:flex; flex-flow:row wrap; align-content:flex-start; align-items:flex-start;
+              width:auto !important; padding:24px 16px 48px !important; }
+  .profile_content,.profile_content .columns,.profile_column,.user_page .user_profile{ display:contents !important; }
+
+  /* defaults: every body element is a full-width, centred line */
+  .user_page .user_profile > *{
+    position:static !important; flex:0 0 100% !important; width:auto !important; box-sizing:border-box;
+    white-space:normal; text-align:center !important; margin:0 0 8px !important;
+  }
+  #profile_header{ order:0; flex:0 0 100%; height:112px; margin:0 0 16px !important; }
+  #profile_header::before{ left:50%; margin-left:-63px; }                   /* logo centred */
+
+  .user_page .user_profile > :nth-child(1){ order:1; font-size:min(84.5px,16vw) !important; line-height:1 !important; }
+  .user_page .user_profile > :nth-child(2){ order:2; font-size:min(24px,5vw) !important; line-height:1.25 !important; }
+  .user_page .user_profile > :nth-child(3){ order:3; font-size:min(24px,5vw) !important; line-height:1.25 !important; margin-bottom:16px !important; }
+  .user_page .user_profile > :nth-child(4){ order:4; flex-direction:row; justify-content:center; margin-bottom:32px !important; }
+
+  /* "Projects" + "Recent>>>Older": same line if they fit, otherwise the second one wraps under */
+  .user_page .user_profile > :nth-child(5){ order:5; flex:0 0 auto !important; text-align:left !important; margin-right:16px !important; }
+  .user_page .user_profile > :nth-child(6){ order:6; flex:0 0 auto !important; text-align:left !important; margin-left:auto !important; display:block;
+                                            font-size:min(24px,5vw) !important; letter-spacing:min(16.32px,2.2vw) !important; }
+  .game_column{ order:7; flex:0 0 100%; min-width:0; padding:0 !important; margin:0 0 40px !important; }
+
+  /* "Others" + "Game-jams, assets etc." */
+  .user_page .user_profile > :nth-child(7){ order:8; flex:0 0 auto !important; text-align:left !important; margin-right:16px !important; }
+  .user_page .user_profile > :nth-child(8){ order:9; flex:0 0 auto !important; text-align:left !important; margin-bottom:8px !important; font-size:min(24px,5vw) !important; }
+  .collections{ order:10; flex:0 0 100%; min-width:0; padding-top:0 !important; margin:0 0 32px !important; }
+
+  /* footer: centred */
+  .user_page::before{ order:11; position:static; flex:0 0 100%; width:100%; height:42px; margin:0 0 12px;
+                      background-position:center; background-size:66px 42px; }
+  .user_page .user_profile > :nth-child(9){  order:12; font-size:min(24px,5vw) !important; }
+  .user_page .user_profile > :nth-child(10){ order:13; font-size:min(24px,5vw) !important; }
+  .user_page .user_profile > :nth-child(11){ order:14; line-height:1.35 !important; }
+  .user_page .user_profile > :nth-child(12){ order:15; text-align:center !important; line-height:1.35 !important; }
+
+  /* big negative margins / bottom padding on the rows are only for the desktop fade+shadow */
+  .user_game_grid,.collections{ width:auto; margin-left:0 !important; margin-right:0 !important; padding-left:0 !important; padding-right:0 !important;
+    overflow-x:auto; -webkit-mask-image:none; mask-image:none; scrollbar-width:thin; }
+  .user_game_grid{ margin-top:0 !important; margin-bottom:0 !important; padding-top:0 !important; padding-bottom:14px !important; }
+  .collections{ padding-bottom:14px !important; margin-top:0 !important; }
+  .user_game_grid .game_cell{ flex-basis:85vw; width:85vw !important; }
+  .collections .game_cell{ flex-basis:70vw; width:70vw !important; }
+}
