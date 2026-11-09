@@ -146,9 +146,9 @@ body::before{
 .user_page .user_profile > :nth-child(5){
   left:0; top:240px; font:700 32px/22px var(--display) !important; letter-spacing:4.16px !important; color:var(--ink) !important;
 }
-/* 6  "Recent>>>Older"       right edge 48px inside the column (clear of the link tiles), y+245 */
+/* 6  "Recent>>>Older"       right-aligned to the 1024px column edge, y+245 */
 .user_page .user_profile > :nth-child(6){
-  left:auto; right:48px; top:245px; width:auto; text-align:right !important;
+  left:auto; right:-16.32px; top:245px; width:auto; text-align:right !important;   /* last letter ends on the 1024px edge (the box is shifted by the trailing letter-spacing) */
   font:700 24px/17px var(--display) !important; letter-spacing:16.32px !important; color:var(--muted-2) !important;
 }
 /* 7  "Others" heading       x+0 y+667 */
@@ -267,6 +267,9 @@ body::before{
 .collections .carousel_wrapper{ display:block !important; padding:0 !important; margin:0 !important; width:auto !important; border:0 !important; background:none !important; }
 .collections .collection_row{ margin:0 0 40px !important; }
 .collections .collection_row:last-child{ margin-bottom:0 !important; }
+/* itch makes .carousel_wrapper a scroller too (overflow-x:auto + margin-top:20px): that was the
+   always-visible bar under every collection row. The row inside it does the scrolling now. */
+.user_page .collection_row .carousel_wrapper{ overflow:visible !important; margin-top:0 !important; }
 .collections .collection_row h2{
   position:relative; z-index:2; margin:0 0 10px !important; padding:0 !important; border:0 !important;
   font:700 24px/20px var(--display); letter-spacing:4.16px; color:var(--muted); text-transform:none;
