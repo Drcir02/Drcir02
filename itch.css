@@ -42,12 +42,34 @@
   --ico-discord:    url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-discord.svg");
 }
 
+/* ---------- 2b. HIDDEN GAMES -------------------------------------------
+   itch only exposes the HIDE buttons for the Projects grid; collection rows always
+   contain every game in the collection. To keep hidden games out of EVERYTHING,
+   their ids are listed here (id = data-game_id of the game on itch).
+   Add or remove a line when you change what's hidden.
+     4698168  Fukanica
+     4138198  Rest in Hell
+     3278434  Vector Books Icon Pack
+     3282936  JaveArt - Fantasy Runic Icon Pack
+   A collection row with nothing left is removed, and when the whole Others
+   section is empty its heading goes too. */
+.game_cell[data-game_id="4698168"],
+.game_cell[data-game_id="4138198"],
+.game_cell[data-game_id="3278434"],
+.game_cell[data-game_id="3282936"]{ display:none !important; }
+.collections .collection_row:not(:has(.game_cell:not([data-game_id="4698168"]):not([data-game_id="4138198"]):not([data-game_id="3278434"]):not([data-game_id="3282936"]))){ display:none !important; }
+.user_page:not(:has(.collections .game_cell:not([data-game_id="4698168"]):not([data-game_id="4138198"]):not([data-game_id="3278434"]):not([data-game_id="3282936"]))) .user_profile > :nth-child(7),
+.user_page:not(:has(.collections .game_cell:not([data-game_id="4698168"]):not([data-game_id="4138198"]):not([data-game_id="3278434"]):not([data-game_id="3282936"]))) .user_profile > :nth-child(8){ display:none !important; }
+
 /* ---------- 3. PAGE --------------------------------------------------- */
-html,body{
-  background:var(--bg) var(--page-img) center top / cover no-repeat fixed !important;
-  color:var(--ink); font-family:var(--body); margin:0;
+html{ background:var(--bg) !important; }
+body{ background:transparent !important; color:var(--ink); font-family:var(--body); margin:0; min-height:1080px; }
+/* background image: always the full viewport (cover), stays put while you scroll.
+   A fixed pseudo-element is used instead of background-attachment:fixed, which phones ignore. */
+body::before{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:var(--page-img) center / cover no-repeat;
 }
-body{ min-height:1080px; }
 #wrapper,.user_page_wrap{ background:none !important; }
 .user_page{
   position:relative;
