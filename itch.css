@@ -68,6 +68,11 @@ body::before{
   content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
   background:var(--page-img) center / cover no-repeat;
 }
+/* portrait / narrow screens: "cover" would only show the empty middle strip of the image,
+   so stretch the whole image to fit the screen instead (the shapes on its edges stay visible) */
+@media (max-aspect-ratio:4/3){ body::before{ background-size:100% 100%; } }
+/* itch's own footer strip: keep it, but drop the dark divider line from the old theme */
+.footer{ border-color:rgba(0,0,0,.08) !important; background:none !important; }
 #wrapper,.user_page_wrap{ background:none !important; }
 .user_page{
   position:relative;
