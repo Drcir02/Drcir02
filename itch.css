@@ -40,7 +40,7 @@
   --ico-linkedin:   url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-linkedin.svg");
   --ico-artstation: url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-artstation.svg");
   --ico-discord:    url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-discord.svg");
-  --ico-book:       url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-book.svg");
+  --wiki-badge:     url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/wiki-badge.svg");   /* 196x164 */
 }
 
 /* ---------- 2b. WHAT YOU HIDE ON ITCH ----------------------------------
@@ -148,23 +148,27 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
 .user_page .user_profile > ul li:nth-child(2) a:hover{ background:#13aff0; color:#fff !important; }
 .user_page .user_profile > ul li:nth-child(3) a:hover{ background:#5865f2; color:#fff !important; }
 
-/* 13  "MY GameDev WIKI" button  x-163 y+50, 196x164 (to the left of the logo, as in Figma).
-       My own look instead of the Figma image: solid dark tile + book icon + white text; peach on hover. */
+/* 13  "MY GameDev WIKI" badge  x-163 y+50, 196x164 (to the left of the logo, as in Figma).
+       A cracked-mosaic "knowledge globe" (img/wiki-badge.svg: black / greys / logo-yellow, with the
+       yellow loop from the logo) with a black name band across it. Tilts a little, straightens + grows
+       on hover. Shadow = the Figma one, but shaped to the globe (drop-shadow filter). */
 .user_page .user_profile > :nth-child(13){ left:-163px; top:50px; width:196px; height:164px; white-space:normal; }
 .user_page .user_profile > :nth-child(13) a{
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
-  width:196px; height:164px; box-sizing:border-box; padding:0 14px;
-  background:#111; color:#fff !important; text-decoration:none !important;
-  font:700 32px/.95 var(--display); letter-spacing:1px; text-align:center;
-  box-shadow:-12px 14px 41.8px rgba(0,0,0,.19), inset 0 0 0 1px rgba(255,255,255,.14);
-  transition:background-color .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease;
+  position:relative; isolation:isolate; display:flex; align-items:center; justify-content:center;
+  width:196px; height:164px; box-sizing:border-box; padding:0 20px;
+  background:var(--wiki-badge) center / 100% 100% no-repeat;
+  color:#fff !important; text-decoration:none !important;
+  font:700 33px/.95 var(--display); letter-spacing:1px; text-align:center; text-transform:uppercase;
+  transform:rotate(-6deg); transform-origin:center;
+  filter:drop-shadow(-12px 14px 41.8px rgba(0,0,0,.19));
+  transition:transform .3s cubic-bezier(.2,.7,.2,1), filter .3s ease;
 }
-.user_page .user_profile > :nth-child(13) a::before{
-  content:""; width:46px; height:46px; background:currentColor;
-  -webkit-mask:var(--ico-book) center / contain no-repeat; mask:var(--ico-book) center / contain no-repeat;
+.user_page .user_profile > :nth-child(13) a::before{            /* the black name band behind the text */
+  content:""; position:absolute; z-index:-1; left:2px; right:2px; top:50%; height:78px; margin-top:-39px;
+  background:#111; box-shadow:0 -3px 0 #f6d43a, 0 3px 0 #f6d43a;
 }
 .user_page .user_profile > :nth-child(13) a:hover{
-  background:#e9a079; color:#111 !important; transform:translateY(-3px); box-shadow:-14px 18px 44px rgba(0,0,0,.26);
+  transform:rotate(-2deg) scale(1.06); filter:drop-shadow(-14px 18px 44px rgba(0,0,0,.3));
 }
 
 /* 5  "Projects" heading     x+0 y+240 */
@@ -399,10 +403,13 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   .user_page .user_profile > :nth-child(1){ order:1; font-size:min(84.5px,16vw) !important; line-height:1 !important; }
   .user_page .user_profile > :nth-child(2){ order:2; font-size:min(24px,5vw) !important; line-height:1.25 !important; }
   .user_page .user_profile > :nth-child(3){ order:3; font-size:min(24px,5vw) !important; line-height:1.25 !important; margin-bottom:16px !important; }
-  .user_page .user_profile > :nth-child(4){ order:4; flex-direction:row; justify-content:center; margin-bottom:16px !important; }
-  .user_page .user_profile > :nth-child(13){ order:4; width:auto !important; height:auto !important; margin-bottom:32px !important; }
-  .user_page .user_profile > :nth-child(13) a{ margin:0 auto; height:120px; flex-direction:row; width:min(100%,260px); font-size:26px; }
-  .user_page .user_profile > :nth-child(13) a::before{ width:34px; height:34px; }
+  .user_page .user_profile > :nth-child(4){ order:4; flex-direction:row; justify-content:center; margin-bottom:32px !important; }
+  /* wiki badge: stays in the header, just left of the (centred) logo, scaled down to fit the space */
+  .user_page .user_profile > :nth-child(13){
+    position:absolute !important; flex:none !important; margin:0 !important; width:196px !important; height:164px !important;
+    top:-2px; right:calc(50% + 71px); left:auto; transform:scale(.66); transform-origin:right center;
+  }
+  .user_page .user_profile > :nth-child(13) a{ transform:rotate(-6deg); }
 
   /* "Projects" + "Recent>>>Older": same line if they fit, otherwise the second one wraps under */
   .user_page .user_profile > :nth-child(5){ order:5; flex:0 0 auto !important; text-align:left !important; margin-right:16px !important; }
@@ -436,3 +443,6 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   .user_game_grid .game_cell{ flex-basis:85vw; width:85vw !important; }
   .collections .game_cell{ flex-basis:70vw; width:70vw !important; }
 }
+
+/* very narrow phones: smaller wiki badge so it fits beside the logo */
+@media (max-width:420px){ .user_page .user_profile > :nth-child(13){ transform:scale(.55); } }
