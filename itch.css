@@ -40,6 +40,7 @@
   --ico-linkedin:   url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-linkedin.svg");
   --ico-artstation: url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-artstation.svg");
   --ico-discord:    url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-discord.svg");
+  --ico-book:       url("https://cdn.jsdelivr.net/gh/Drcir02/Drcir02@main/img/icon-book.svg");
 }
 
 /* ---------- 2b. WHAT YOU HIDE ON ITCH ----------------------------------
@@ -70,7 +71,7 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   background:var(--page-img) center / 100% 100% no-repeat;     /* whole image, edge to edge, no cropping */
 }
 /* phones: keep the image's proportions (sides get cropped) instead of stretching it */
-@media (max-width:1180px){ #wrapper::before{ background-size:cover; } }
+@media (max-width:1349px){ #wrapper::before{ background-size:cover; } }
 /* itch's own footer strip: keep it, but drop the dark divider line from the old theme */
 .footer{ border-color:rgba(0,0,0,.08) !important; background:none !important; }
 #wrapper,.user_page_wrap{ background:none !important; }
@@ -147,6 +148,25 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
 .user_page .user_profile > ul li:nth-child(2) a:hover{ background:#13aff0; color:#fff !important; }
 .user_page .user_profile > ul li:nth-child(3) a:hover{ background:#5865f2; color:#fff !important; }
 
+/* 13  "MY GameDev WIKI" button  x-163 y+50, 196x164 (to the left of the logo, as in Figma).
+       My own look instead of the Figma image: solid dark tile + book icon + white text; peach on hover. */
+.user_page .user_profile > :nth-child(13){ left:-163px; top:50px; width:196px; height:164px; white-space:normal; }
+.user_page .user_profile > :nth-child(13) a{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+  width:196px; height:164px; box-sizing:border-box; padding:0 14px;
+  background:#111; color:#fff !important; text-decoration:none !important;
+  font:700 32px/.95 var(--display); letter-spacing:1px; text-align:center;
+  box-shadow:0 10px 26px rgba(0,0,0,.20), inset 0 0 0 1px rgba(255,255,255,.14);
+  transition:background-color .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+.user_page .user_profile > :nth-child(13) a::before{
+  content:""; width:46px; height:46px; background:currentColor;
+  -webkit-mask:var(--ico-book) center / contain no-repeat; mask:var(--ico-book) center / contain no-repeat;
+}
+.user_page .user_profile > :nth-child(13) a:hover{
+  background:#e9a079; color:#111 !important; transform:translateY(-3px); box-shadow:0 14px 30px rgba(0,0,0,.28);
+}
+
 /* 5  "Projects" heading     x+0 y+240 */
 .user_page .user_profile > :nth-child(5){
   left:0; top:240px; font:700 32px/22px var(--display) !important; letter-spacing:4.16px !important; color:var(--ink) !important;
@@ -184,7 +204,7 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   float:none !important; display:block !important;
   margin:0 !important; padding:0 !important;
   background:#d9d9d9; overflow:hidden;
-  box-shadow:0 6px 14px rgba(0,0,0,.18);
+  box-shadow:0 10px 26px rgba(0,0,0,.20);
   border:0 !important; border-radius:0 !important;
 }
 .game_cell:nth-child(even){ background:#f3f3f3; }
@@ -261,7 +281,7 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
 /* hover: the cover zooms in slowly, the card lifts a little, the frame lights up - nothing else changes */
 .game_cell{ transition:transform .25s ease, box-shadow .25s ease; }
 .game_cell .thumb_link img{ transition:transform .6s cubic-bezier(.2,.7,.2,1); }
-.game_cell:hover{ transform:translateY(-3px); box-shadow:0 12px 24px rgba(0,0,0,.26); }
+.game_cell:hover{ transform:translateY(-3px); box-shadow:0 14px 30px rgba(0,0,0,.28); }
 .game_cell:hover .thumb_link img{ transform:scale(1.04); }
 .game_cell:hover::after{ box-shadow:inset 0 0 0 1px rgba(255,255,255,.4); }
 
@@ -271,21 +291,23 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   position:relative; width:auto !important; float:none !important;
   padding:34px 0 0 !important; margin:0 0 64px !important;
 }
-/* Every card row (Projects + each collection) is a 1243px-wide strip (it may run past the
-   1024 column). padding + negative margin leave room for the card shadow without moving
-   the layout. A row only gets a fade + scrollbar when a card actually reaches into the
-   fade zone (right of 938px); otherwise it's plain: no fade, no scrollbar. */
-.user_game_grid,.collections .game_list_widget{
+/* Every card row (Projects + each collection) is a 1249px strip: 30px of room on the left/top and
+   32px at the bottom so the card drop shadow is never cut off (padding + equal negative margin =
+   the layout doesn't move), and it runs past the 1024 column. A row only gets a fade + scrollbar
+   when a card actually reaches into the fade zone (right of column x=914); otherwise it's plain.
+   NOTE: ".user_page" in front of the selector beats itch's ".user_page .base_widget{padding:0}" reset. */
+.user_page .user_game_grid,.user_page .collections .game_list_widget{
   display:flex !important; flex-wrap:nowrap; gap:6px; box-sizing:border-box;     /* 6px between cards */
-  width:1243px; padding:24px 0 20px 24px !important; margin:-24px 0 -20px -24px !important;
+  width:1249px; padding:30px 0 32px 30px !important; margin:-30px 0 -32px -30px !important;
   overflow-x:auto; overflow-y:hidden;
 }
 /* scrollbars: a chunky rounded track + thumb that's easy to grab (Chrome/Edge/Safari/Opera;
-   Firefox gets its standard bar in the same colours) */
-.user_game_grid,.collections .game_list_widget{ scrollbar-width:auto !important; scrollbar-color:auto !important; }   /* undo itch's orange bar so the styling below applies */
+   Firefox gets its standard bar in the same colours). The track is trimmed so it runs exactly
+   from the left edge to the right edge of the 1024px column (not the whole extended strip). */
+.user_page .user_game_grid,.user_page .collections .game_list_widget{ scrollbar-width:auto !important; scrollbar-color:auto !important; }   /* undo itch's orange bar */
 .user_game_grid::-webkit-scrollbar,.collections .game_list_widget::-webkit-scrollbar{ height:16px; }
 .user_game_grid::-webkit-scrollbar-track,.collections .game_list_widget::-webkit-scrollbar-track{
-  background:rgba(0,0,0,.07); border-radius:8px; margin-left:24px;
+  background:rgba(0,0,0,.07); border-radius:8px; margin-left:30px; margin-right:195px;
 }
 .user_game_grid::-webkit-scrollbar-thumb,.collections .game_list_widget::-webkit-scrollbar-thumb{
   background:var(--muted); border-radius:8px; border:3px solid transparent; background-clip:padding-box; min-width:90px;
@@ -294,14 +316,14 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   background:#5e5650; background-clip:padding-box;
 }
 @supports (-moz-appearance:none){
-  .user_game_grid,.collections .game_list_widget{ scrollbar-width:auto !important; scrollbar-color:var(--muted) rgba(0,0,0,.07) !important; }
+  .user_page .user_game_grid,.user_page .collections .game_list_widget{ scrollbar-width:auto !important; scrollbar-color:var(--muted) rgba(0,0,0,.07) !important; }
 }
 /* ...a row that reaches the fade zone: Projects = 3+ cards (457px each), collections = 4+ cards (306px each).
    Projects ignores the hidden-project ids from 2b when counting. */
 .user_game_grid:has(> .game_cell:nth-child(3 of :not([data-game_id="4698168"],[data-game_id="4138198"],[data-game_id="3278434"],[data-game_id="3282936"]))),
 .collections .game_list_widget:has(> .game_cell:nth-child(4)){
-  -webkit-mask-image:linear-gradient(to right,#000 938px,transparent 1243px);
-          mask-image:linear-gradient(to right,#000 938px,transparent 1243px);
+  -webkit-mask-image:linear-gradient(to right,#000 944px,transparent 1249px);
+          mask-image:linear-gradient(to right,#000 944px,transparent 1249px);
 }
 /* spacer = width of the fade, so the last card can be scrolled fully out of it */
 .user_game_grid:has(> .game_cell:nth-child(3 of :not([data-game_id="4698168"],[data-game_id="4138198"],[data-game_id="3278434"],[data-game_id="3282936"])))::after,
@@ -335,12 +357,12 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
 .collections .game_cell .game_platform .icon{ width:30px; font-size:17px; }
 .collections .game_cell .game_platform .web_flag::before{ font-size:13px; }
 
-/* ---------- 9. NARROW SCREENS  (<= 1180px: everything stacks in one column)
+/* ---------- 9. NARROW SCREENS  (<= 1349px: everything stacks in one column)
    The body's elements stop being absolutely positioned; they become flex items of
    .user_page (wrapping rows) together with the card rows, so headings still sit above
    their rows. Header + footer are centred. "Projects / Recent>>>Older" and
    "Others / Game-jams..." share a line when they fit and wrap underneath when they don't. */
-@media (max-width:1180px){
+@media (max-width:1349px){
   .user_page{ display:flex; flex-flow:row wrap; align-content:flex-start; align-items:flex-start;
               width:auto !important; padding:24px 16px 48px !important; }
   .profile_content,.profile_content .columns,.profile_column,.user_page .user_profile{ display:contents !important; }
@@ -356,7 +378,10 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   .user_page .user_profile > :nth-child(1){ order:1; font-size:min(84.5px,16vw) !important; line-height:1 !important; }
   .user_page .user_profile > :nth-child(2){ order:2; font-size:min(24px,5vw) !important; line-height:1.25 !important; }
   .user_page .user_profile > :nth-child(3){ order:3; font-size:min(24px,5vw) !important; line-height:1.25 !important; margin-bottom:16px !important; }
-  .user_page .user_profile > :nth-child(4){ order:4; flex-direction:row; justify-content:center; margin-bottom:32px !important; }
+  .user_page .user_profile > :nth-child(4){ order:4; flex-direction:row; justify-content:center; margin-bottom:16px !important; }
+  .user_page .user_profile > :nth-child(13){ order:4; width:auto !important; height:auto !important; margin-bottom:32px !important; }
+  .user_page .user_profile > :nth-child(13) a{ margin:0 auto; height:120px; flex-direction:row; width:min(100%,260px); font-size:26px; }
+  .user_page .user_profile > :nth-child(13) a::before{ width:34px; height:34px; }
 
   /* "Projects" + "Recent>>>Older": same line if they fit, otherwise the second one wraps under */
   .user_page .user_profile > :nth-child(5){ order:5; flex:0 0 auto !important; text-align:left !important; margin-right:16px !important; }
@@ -378,7 +403,7 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   .user_page .user_profile > :nth-child(12){ order:15; text-align:center !important; line-height:1.35 !important; }
 
   /* rows: no desktop fade/shadow tricks, no spacer; each row scrolls on its own */
-  .user_game_grid,.collections .game_list_widget{ width:auto; margin:0 !important; padding:0 0 14px !important;
+  .user_page .user_game_grid,.user_page .collections .game_list_widget{ width:auto; margin:0 !important; padding:0 0 14px !important;
     -webkit-mask-image:none !important; mask-image:none !important; }
   .user_game_grid::after,.collections .game_list_widget::after,
   .user_game_grid:has(> .game_cell)::after,.collections .game_list_widget:has(> .game_cell)::after{ display:none !important; }
