@@ -65,7 +65,7 @@ html{ background:var(--bg) !important; }
 body{ background:transparent !important; color:var(--ink); font-family:var(--body); margin:0; min-height:1080px; }
 /* background image: sits BEHIND THE WHOLE PAGE and scrolls with it (content sits on the bg).
    It always spans the full width and the full page height (min. one screen high). */
-#wrapper{ position:relative; min-height:100vh; }
+#wrapper{ position:relative; min-height:100vh; overflow-x:clip; }
 #wrapper::before{
   content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
   background:var(--page-img) center / 100% 100% no-repeat;     /* whole image, edge to edge, no cropping */
@@ -156,7 +156,7 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   width:196px; height:164px; box-sizing:border-box; padding:0 14px;
   background:#111; color:#fff !important; text-decoration:none !important;
   font:700 32px/.95 var(--display); letter-spacing:1px; text-align:center;
-  box-shadow:0 10px 26px rgba(0,0,0,.20), inset 0 0 0 1px rgba(255,255,255,.14);
+  box-shadow:-12px 14px 41.8px rgba(0,0,0,.19), inset 0 0 0 1px rgba(255,255,255,.14);
   transition:background-color .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease;
 }
 .user_page .user_profile > :nth-child(13) a::before{
@@ -164,7 +164,7 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   -webkit-mask:var(--ico-book) center / contain no-repeat; mask:var(--ico-book) center / contain no-repeat;
 }
 .user_page .user_profile > :nth-child(13) a:hover{
-  background:#e9a079; color:#111 !important; transform:translateY(-3px); box-shadow:0 14px 30px rgba(0,0,0,.28);
+  background:#e9a079; color:#111 !important; transform:translateY(-3px); box-shadow:-14px 18px 44px rgba(0,0,0,.26);
 }
 
 /* 5  "Projects" heading     x+0 y+240 */
@@ -204,7 +204,7 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   float:none !important; display:block !important;
   margin:0 !important; padding:0 !important;
   background:#d9d9d9; overflow:hidden;
-  box-shadow:0 10px 26px rgba(0,0,0,.20);
+  box-shadow:none;                                   /* desktop: the row draws the shadow (section 7); phones: see the media query */
   border:0 !important; border-radius:0 !important;
 }
 .game_cell:nth-child(even){ background:#f3f3f3; }
@@ -281,7 +281,7 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
 /* hover: the cover zooms in slowly, the card lifts a little, the frame lights up - nothing else changes */
 .game_cell{ transition:transform .25s ease, box-shadow .25s ease; }
 .game_cell .thumb_link img{ transition:transform .6s cubic-bezier(.2,.7,.2,1); }
-.game_cell:hover{ transform:translateY(-3px); box-shadow:0 14px 30px rgba(0,0,0,.28); }
+.game_cell:hover{ transform:translateY(-3px); }
 .game_cell:hover .thumb_link img{ transform:scale(1.04); }
 .game_cell:hover::after{ box-shadow:inset 0 0 0 1px rgba(255,255,255,.4); }
 
@@ -291,23 +291,26 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   position:relative; width:auto !important; float:none !important;
   padding:34px 0 0 !important; margin:0 0 64px !important;
 }
-/* Every card row (Projects + each collection) is a 1249px strip: 30px of room on the left/top and
-   32px at the bottom so the card drop shadow is never cut off (padding + equal negative margin =
-   the layout doesn't move), and it runs past the 1024 column. A row only gets a fade + scrollbar
-   when a card actually reaches into the fade zone (right of column x=914); otherwise it's plain.
+/* ---------- card rows (Projects + each collection) ------------------------------
+   Every row is a full-viewport-wide scroller, so cards that scroll away to the left or right are never
+   cut off at the column edge: they run on into the page margins and fade out. At rest the first card
+   sits exactly on the column's left edge (padding-left = the margin between the viewport edge and the
+   1024px column; --m). A row only gets fades + a scrollbar when a card actually reaches the fade zone
+   (right of column x=914); otherwise it's plain.
    NOTE: ".user_page" in front of the selector beats itch's ".user_page .base_widget{padding:0}" reset. */
 .user_page .user_game_grid,.user_page .collections .game_list_widget{
+  --m:calc(50vw - 512px);
   display:flex !important; flex-wrap:nowrap; gap:6px; box-sizing:border-box;     /* 6px between cards */
-  width:1249px; padding:30px 0 32px 30px !important; margin:-30px 0 -32px -30px !important;
+  width:100vw; margin:-6px 0 0 calc(50% - 50vw) !important;
+  padding:6px 0 8px var(--m) !important;      /* 6px top = room for the hover lift, 8px = gap above the scrollbar */
   overflow-x:auto; overflow-y:hidden;
 }
-/* scrollbars: a chunky rounded track + thumb that's easy to grab (Chrome/Edge/Safari/Opera;
-   Firefox gets its standard bar in the same colours). The track is trimmed so it runs exactly
-   from the left edge to the right edge of the 1024px column (not the whole extended strip). */
+/* scrollbar: chunky rounded track + thumb that's easy to grab (Chrome/Edge/Safari/Opera; Firefox gets its
+   standard bar in the same colours). The track is trimmed so it spans exactly the 1024px column. */
 .user_page .user_game_grid,.user_page .collections .game_list_widget{ scrollbar-width:auto !important; scrollbar-color:auto !important; }   /* undo itch's orange bar */
 .user_game_grid::-webkit-scrollbar,.collections .game_list_widget::-webkit-scrollbar{ height:16px; }
 .user_game_grid::-webkit-scrollbar-track,.collections .game_list_widget::-webkit-scrollbar-track{
-  background:rgba(0,0,0,.07); border-radius:8px; margin-left:30px; margin-right:195px;
+  background:rgba(0,0,0,.07); border-radius:8px; margin-left:calc(50vw - 512px); margin-right:calc(50vw - 512px);
 }
 .user_game_grid::-webkit-scrollbar-thumb,.collections .game_list_widget::-webkit-scrollbar-thumb{
   background:var(--muted); border-radius:8px; border:3px solid transparent; background-clip:padding-box; min-width:90px;
@@ -322,12 +325,30 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
    Projects ignores the hidden-project ids from 2b when counting. */
 .user_game_grid:has(> .game_cell:nth-child(3 of :not([data-game_id="4698168"],[data-game_id="4138198"],[data-game_id="3278434"],[data-game_id="3282936"]))),
 .collections .game_list_widget:has(> .game_cell:nth-child(4)){
-  -webkit-mask-image:linear-gradient(to right,#000 944px,transparent 1249px);
-          mask-image:linear-gradient(to right,#000 944px,transparent 1249px);
+  -webkit-mask-image:linear-gradient(to right, transparent calc(var(--m) - 260px), #000 calc(var(--m) - 30px), #000 calc(var(--m) + 914px), transparent calc(var(--m) + 1219px));
+          mask-image:linear-gradient(to right, transparent calc(var(--m) - 260px), #000 calc(var(--m) - 30px), #000 calc(var(--m) + 914px), transparent calc(var(--m) + 1219px));
 }
-/* spacer = width of the fade, so the last card can be scrolled fully out of it */
+/* spacer = so the last card can be scrolled fully out of the fade zone */
 .user_game_grid:has(> .game_cell:nth-child(3 of :not([data-game_id="4698168"],[data-game_id="4138198"],[data-game_id="3278434"],[data-game_id="3282936"])))::after,
-.collections .game_list_widget:has(> .game_cell:nth-child(4))::after{ content:""; flex:0 0 330px; }
+.collections .game_list_widget:has(> .game_cell:nth-child(4))::after{ content:""; flex:0 0 calc(50vw - 402px); }
+
+/* DROP SHADOW from Figma (x -12, y 14, blur 41.8, 19% black). It can't live on the cards: the scrollers
+   clip anything outside them. So it is drawn once per row, on the row's container, as a block exactly
+   as wide as the cards (capped at the fade zone). */
+.game_column::before,.collections .collection_row::before{
+  content:""; position:absolute; left:0; width:0; pointer-events:none;
+  box-shadow:-12px 14px 41.8px rgba(0,0,0,.19);
+}
+.game_column::before{ top:34px; height:329px; }
+.collections .collection_row{ position:relative; }
+.collections .collection_row::before{ top:30px; height:180px; }
+.game_column:has(.user_game_grid > .game_cell:nth-child(1 of :not([data-game_id="4698168"],[data-game_id="4138198"],[data-game_id="3278434"],[data-game_id="3282936"])))::before{ width:457px; }
+.game_column:has(.user_game_grid > .game_cell:nth-child(2 of :not([data-game_id="4698168"],[data-game_id="4138198"],[data-game_id="3278434"],[data-game_id="3282936"])))::before{ width:920px; }
+.game_column:has(.user_game_grid > .game_cell:nth-child(3 of :not([data-game_id="4698168"],[data-game_id="4138198"],[data-game_id="3278434"],[data-game_id="3282936"])))::before{ width:1219px; -webkit-mask-image:linear-gradient(to right,#000 914px,transparent 1219px); mask-image:linear-gradient(to right,#000 914px,transparent 1219px); }
+.collections .collection_row:has(.game_list_widget > .game_cell:nth-child(1))::before{ width:306px; }
+.collections .collection_row:has(.game_list_widget > .game_cell:nth-child(2))::before{ width:618px; }
+.collections .collection_row:has(.game_list_widget > .game_cell:nth-child(3))::before{ width:930px; }
+.collections .collection_row:has(.game_list_widget > .game_cell:nth-child(4))::before{ width:1219px; -webkit-mask-image:linear-gradient(to right,#000 914px,transparent 1219px); mask-image:linear-gradient(to right,#000 914px,transparent 1219px); }
 .user_game_grid .game_cell{ flex:0 0 457px; width:457px !important; height:329px !important; }
 
 /* ---------- 8. OTHERS = ONE ROW PER COLLECTION (GameJams, Assets, ...) --
@@ -403,6 +424,9 @@ body{ background:transparent !important; color:var(--ink); font-family:var(--bod
   .user_page .user_profile > :nth-child(12){ order:15; text-align:center !important; line-height:1.35 !important; }
 
   /* rows: no desktop fade/shadow tricks, no spacer; each row scrolls on its own */
+  .game_column::before,.collections .collection_row::before{ display:none !important; }
+  .game_cell{ box-shadow:-6px 8px 20px rgba(0,0,0,.19); }
+  .user_game_grid::-webkit-scrollbar-track,.collections .game_list_widget::-webkit-scrollbar-track{ margin:0 !important; }
   .user_page .user_game_grid,.user_page .collections .game_list_widget{ width:auto; margin:0 !important; padding:0 0 14px !important;
     -webkit-mask-image:none !important; mask-image:none !important; }
   .user_game_grid::after,.collections .game_list_widget::after,
